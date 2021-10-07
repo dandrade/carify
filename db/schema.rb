@@ -10,10 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_07_184354) do
+ActiveRecord::Schema.define(version: 2021_10_07_185826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "car_brands", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "car_dealerships", force: :cascade do |t|
+    t.bigint "car_id", null: false
+    t.bigint "dealership_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["car_id"], name: "index_car_dealerships_on_car_id"
+    t.index ["dealership_id"], name: "index_car_dealerships_on_dealership_id"
+  end
+
+  create_table "cars", force: :cascade do |t|
+    t.bigint "car_brand_id", null: false
+    t.string "model"
+    t.string "color"
+    t.string "name"
+    t.integer "doors"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["car_brand_id"], name: "index_cars_on_car_brand_id"
+  end
 
   create_table "dealerships", force: :cascade do |t|
     t.string "name"
@@ -45,6 +71,9 @@ ActiveRecord::Schema.define(version: 2021_10_07_184354) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "car_dealerships", "cars"
+  add_foreign_key "car_dealerships", "dealerships"
+  add_foreign_key "cars", "car_brands"
   add_foreign_key "user_dealerships", "dealerships"
   add_foreign_key "user_dealerships", "users"
 end

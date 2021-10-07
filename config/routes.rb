@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :cars
+  resources :car_brands
   resources :dealerships
   root to: "dashboard#index"
   devise_for :users
