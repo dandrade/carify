@@ -1,4 +1,6 @@
 class CarBrandsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :admin_only
   before_action :set_car_brand, only: %i[ show edit update destroy ]
 
   # GET /car_brands or /car_brands.json

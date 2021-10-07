@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :car_brand_id %>
-    <%= form.text_field :car_brand_id %>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
   </div>
 
   <div class="field">
@@ -26,15 +26,48 @@
     <%= form.text_field :color %>
   </div>
 
+   <div class="field">
+    <%= form.label :price %>
+    <%= form.text_field :price %>
+  </div>
+
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :car_brand_id %>
+    <%= form.collection_select :car_brand_id, CarBrand.all, :id, :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :kind %>
+    <%= form.select :kind, options_for_select(
+      Car.kinds.map { |key, value| [key.titleize, Car.kinds.key(value)] }, @car.kind) %>
   </div>
 
   <div class="field">
     <%= form.label :doors %>
     <%= form.number_field :doors %>
   </div>
+
+  <div class="field">
+    <%= form.label :quantity %>
+    <%= form.number_field :quantity %>
+  </div>
+
+  <div class='field'>
+    <%= form.label :dealerships %>
+    <%= form.collection_check_boxes :dealership_ids, Dealership.all, :id, :name %>
+    <%= form.fields_for :dealerships, car.dealerships.build do |deal_fields| %>
+      <h3>New Dealership</h3>
+      <div class="field">
+        <%= deal_fields.label :name %>
+        <%= deal_fields.text_field :name %>
+      </div>
+      <div class="field">
+        <%= deal_fields.label :address %>
+        <%= deal_fields.text_area :address %>
+      </div>
+    <% end %>
+  </div>
+
 
   <div class="actions">
     <%= form.submit %>

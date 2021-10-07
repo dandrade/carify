@@ -1,9 +1,11 @@
 class CarsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :admin_only, except: %i[index show]
   before_action :set_car, only: %i[ show edit update destroy ]
-
+  before_action :get_brands_for_select, only: %i[new edit]
   # GET /cars or /cars.json
   def index
-    @cars = Car.all
+    @cars = Car.all.includes(:car_brand, :dealerships)
   end
 
   # GET /cars/1 or /cars/1.json
@@ -57,6 +59,9 @@ class CarsController < ApplicationController
   end
 
   private
+    def get_brands_for_select
+      @brands = CarBrand.all.map { |brand| [brand.name, brand.id]}
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_car
       @car = Car.find(params[:id])
@@ -64,6 +69,6 @@ class CarsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def car_params
-      params.require(:car).permit(:car_brand_id, :model, :color, :name, :doors)
+      params.require(:car).permit(:car_brand_id, :model, :color, :name, :doors, :price, :kind, :quantity, dealership_ids:[], dealerships_attributes: [:name])
     end
 end
