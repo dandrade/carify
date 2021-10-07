@@ -5,7 +5,9 @@ class CarsController < ApplicationController
   before_action :get_brands_for_select, only: %i[new edit]
   # GET /cars or /cars.json
   def index
-    @cars = Car.all.includes(:car_brand, :dealerships)
+    current_user.dealerships.includes(:cars).each do |dealership|
+      @cars = dealership.cars
+    end
   end
 
   # GET /cars/1 or /cars/1.json
