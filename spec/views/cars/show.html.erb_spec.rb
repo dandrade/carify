@@ -2,8 +2,21 @@ require 'rails_helper'
 
 RSpec.describe "cars/show", type: :view do
   before(:each) do
+
+    @user = assign(:current_user, User.create!(
+      email: Faker::Internet.unique.email,
+      password: "123456",
+      password_confirmation: "123456",
+      role: :admin
+    ))
+
+    sign_in @user
+
+    @brand = assign(:brand, CarBrand.create!(
+      name: "Name"
+    ))
     @car = assign(:car, Car.create!(
-      car_brand: nil,
+      car_brand: @brand,
       model: "Model",
       color: "Color",
       name: "Name",

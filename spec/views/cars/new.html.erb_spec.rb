@@ -16,7 +16,7 @@ RSpec.describe "cars/new", type: :view do
 
     assert_select "form[action=?][method=?]", cars_path, "post" do
 
-      assert_select "input[name=?]", "car[car_brand_id]"
+      assert_select "select[name=?]", "car[car_brand_id]"
 
       assert_select "input[name=?]", "car[model]"
 
